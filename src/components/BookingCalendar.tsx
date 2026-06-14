@@ -21,10 +21,10 @@ export default function BookingCalendar({ onClose, bookingFormRef }: BookingCale
   const [err, setErr] = useState<string | null>(null);
 
   const motives = [
-    { key: "secundaria", label: "🎒 Colegio (4to/5to Sec)", sub: "Orientación básica y dudas iniciales" },
-    { key: "universitario", label: "🎓 Universidad/Inst (1-2 ciclo)", sub: "Desbloquear cursos complejos de progra" },
-    { key: "reconversion", label: "💼 Reconversión Laboral", subtitle: "Ruta de habilidades y portafolio técnico" },
-    { key: "general", label: "⚡ mentoría General Tech", subtitle: "Revisión de proyectos y consejos libres" }
+    { key: "secundaria", label: "🎒 Orientación Vocacional (Colegio)", sub: "Si estás en 4to/5to de secundaria y no sabes si estudiar una carrera tech." },
+    { key: "universitario", label: "🎓 Apoyo Universitario (Ciclos 1-2)", sub: "Dudas sobre si seguir o cómo pasar tus primeros cursos difíciles de progra." },
+    { key: "reconversion", label: "💼 Reconversión / Orientación de Carrera", sub: "Dudas sobre Ing. de Software, Sistemas, Ciencias de la Computación o IA." },
+    { key: "general", label: "⚡ Prácticas y Realidad Laboral", sub: "Consejos para armar tu portafolio, LinkedIn o buscar tus primeras prácticas." }
   ];
 
   const futureDates = [
@@ -108,13 +108,13 @@ export default function BookingCalendar({ onClose, bookingFormRef }: BookingCale
         <div className="text-center space-y-3">
           <span className="bg-yellow-300 text-[#0054d4] border-2 border-black font-mono text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <Sparkles className="w-4 h-4 animate-spin-slow" />
-            ¡INVERSIÓN ÚNICA POR SESIÓN!
+            ¡AGENDA TU SESIÓN 1:1 AL INSTANTE!
           </span>
           <h2 className="text-4xl sm:text-5xl font-black font-sans tracking-tight text-white leading-none pt-2">
-            Tu camino al éxito
+            Reserva tu Mentoría con Kuni
           </h2>
           <p className="max-w-xl mx-auto text-sm sm:text-base text-blue-100 font-sans">
-            Ruta paso a paso: Selecciona tu etapa, agenda una fecha ideal, y reunámonos para trazar tu roadmap exitoso por solo S/ 30 soles peruanos.
+            Elige tu perfil, selecciona un horario y asegura tu videollamada de 1 hora por Google Meet para trazar tu plan de carrera por solo S/ 30 soles.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function BookingCalendar({ onClose, bookingFormRef }: BookingCale
                 S/30 soles
               </span>
               <span className="font-mono text-xs font-bold text-gray-500">
-                Llamada de 45 mins
+                Llamada 1:1 de 1 hora
               </span>
             </div>
             
@@ -145,10 +145,10 @@ export default function BookingCalendar({ onClose, bookingFormRef }: BookingCale
             <div className="space-y-6 animate-fade-in text-left">
               <div className="space-y-1">
                 <h3 className="text-lg font-black font-sans text-gray-900">
-                  ¿Cuál es el motivo de tu asesoría?
+                  ⚡ Agenda tu asesoría con Kuni de forma instantánea
                 </h3>
                 <p className="text-xs text-gray-500 font-sans">
-                  Para poder adaptar mejor los consejos y el enfoque de las herramientas de la reunión.
+                  Selecciona la opción que mejor se adapte a tu situación actual para preparar el material antes de reunirnos.
                 </p>
               </div>
 
@@ -168,7 +168,7 @@ export default function BookingCalendar({ onClose, bookingFormRef }: BookingCale
                     id={`booking-motive-btn-${m.key}`}
                   >
                     <div className="font-black text-sm">{m.label}</div>
-                    <div className="text-xs text-gray-500 font-normal mt-0.5">{m.sub || m.subtitle}</div>
+                    <div className="text-xs text-gray-500 font-normal mt-0.5">{m.sub}</div>
                   </button>
                 ))}
               </div>

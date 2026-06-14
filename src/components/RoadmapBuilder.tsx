@@ -39,6 +39,7 @@ export default function RoadmapBuilder({ stageOverride, onScrollTo }: RoadmapBui
     { key: "frontend", title: "🌐 Front-End", desc: "Interfaces dinámicas (React, Tailwind)" },
     { key: "backend", title: "⚙️ Back-End", desc: "Base de datos y Servidores (Node, Python)" },
     { key: "datascience", title: "📊 Data Dev / Python", desc: "Manejo de Base de Datos y Gráficos" },
+    { key: "ia_engineer", title: "🤖 IA Engineer", desc: "Modelos, Prompts y Agentes Inteligentes" },
     { key: "mobile", title: "📱 App Móvil", desc: "Apps en celular (React Native o Flutter)" },
     { key: "game", title: "🎮 Videojuegos", desc: "Desarrollo con Unity o Godot" }
   ];

@@ -46,6 +46,7 @@ const testimonials: Testimonial[] = [
 ];
 
 const bookings: Booking[] = [];
+const pendingTestimonials: Testimonial[] = [];
 
 // Secure connection to Gemini API
 let aiClient: GoogleGenAI | null = null;
@@ -140,8 +141,8 @@ app.post("/api/testimonials/add", (req, res) => {
       isStudent: !!isStudent
     };
 
-    testimonials.unshift(newTestimonial);
-    res.status(201).json(newTestimonial);
+    pendingTestimonials.unshift(newTestimonial);
+    res.status(201).json({ status: "moderation", data: newTestimonial });
   } catch (error) {
     console.error("Testimonials error:", error);
     res.status(500).json({ error: "Error agregando el testimonio" });
@@ -168,6 +169,7 @@ app.post("/api/gemini/roadmap", async (req, res) => {
       frontend: "Desarrollo Front-End (Creación de interfaces web atractivas con React / Tailwind)",
       backend: "Desarrollo Back-End (Modelado de bases de datos, APIs robustas con Node/Express o Python)",
       datascience: "Ciencia de Datos y Análisis (Manejo de datos complejos, visualizaciones, Python/SQL)",
+      ia_engineer: "Ingeniería de Inteligencia Artificial (Integración de modelos, Prompts, RAG y Agentes inteligentes con Python/TypeScript)",
       mobile: "Desarrollo de Aplicaciones Móviles (Creación de apps en Flutter, React Native o nativo)",
       game: "Desarrollo de Videojuegos (Fundamentos de motores como Unity o Godot y C#)"
     };

@@ -1,29 +1,29 @@
 import React, { useState } from "react";
-import { CheckCircle2, Monitor, Code, Terminal, Compass, Disc, Sparkles } from "lucide-react";
+import { CheckCircle2, Disc, Sparkles } from "lucide-react";
 
 export default function WhatYouGet() {
-  const [activeHotspot, setActiveHotspot] = useState<string>("editor");
+  const [activeHotspot, setActiveHotspot] = useState<string>("comparar");
 
   const hotspots = [
     {
-      id: "editor",
-      title: "📝 Código Ordenado (VS Code)",
-      description: "Estrategias sobre cómo modular tu código React, estructurar tus carpetas, usar TypeScript de forma segura y evitar malas prácticas comunes."
+      id: "comparar",
+      title: "🧭 Comparación de Carreras",
+      description: "Analizamos qué hace un profesional de Software, Sistemas, Ciencias de la Computación o IA, y comparamos su enfoque práctico y laboral."
     },
     {
-      id: "browser",
-      title: "🌐 Aplicaciones en Vivo",
-      description: "Despliegues reales en la nube (Vercel, Netlify o Render) para que tus familiares y reclutadores interactúen con tus creaciones."
+      id: "diagnostico",
+      title: "🎯 Diagnóstico Vocacional",
+      description: "Identificamos tus bloqueos (miedo al código, indecisión académica) para diseñar material personalizado preparado exclusivamente para ti."
     },
     {
-      id: "github",
-      title: "🐙 Historial Verde (GitHub)",
-      description: "Cómo construir un perfil atractivo con Readmes interactivos, contribuciones consistentes e historias de proyectos reales que destaquen."
+      id: "meet",
+      title: "📅 Meet de 1 Hora (1:1)",
+      description: "Una videollamada interactiva de 60 minutos enfocada totalmente en ti y tus dudas, por solo S/ 30 la sesión."
     },
     {
-      id: "terminal",
-      title: "💻 Terminal & Scripts",
-      description: "Familiarízate con comandos básicos de UNIX, automatización sencilla y herramientas de construcción (Vite, npm scripts) como un pro de verdad."
+      id: "practicas",
+      title: "🚀 Ruta de Inserción",
+      description: "Para estudiantes avanzados: estructuramos tu portafolio y LinkedIn para destacar ante reclutadores y conseguir tus primeras prácticas."
     }
   ];
 
@@ -37,7 +37,7 @@ export default function WhatYouGet() {
             ¿Qué obtienes en una sesión?
           </h2>
           <p className="max-w-3xl text-sm sm:text-base text-gray-600 font-sans">
-            No es solo una llamada cualquiera; es el inicio de tu transformación profesional en el desarrollo. Nos enfocamos en resolver tus bloqueos técnicos específicos y darte herramientas de inmediato.
+            No es solo una videollamada cualquiera; es un espacio personalizado de 1 hora por Google Meet a solo S/ 30 para tomar decisiones informadas sobre tu futuro en tecnología.
           </p>
         </div>
 
@@ -55,10 +55,10 @@ export default function WhatYouGet() {
                 </div>
                 <div>
                   <h3 className="text-lg font-black font-sans text-gray-900">
-                    Hoja de ruta personalizada
+                    Claridad y Elección de Carrera
                   </h3>
                   <p className="text-xs text-gray-600 font-sans mt-1">
-                    Un plan pragmático paso a paso basado en tus metas reales, tiempos disponibles y conocimientos previos.
+                    Te ayudo a entender las diferencias reales y a elegir entre Ingeniería de Software, Sistemas, Ciencias de la Computación o IA, según lo que de verdad te apasione y convenga.
                   </p>
                 </div>
               </div>
@@ -72,10 +72,10 @@ export default function WhatYouGet() {
                 </div>
                 <div>
                   <h3 className="text-lg font-black font-sans text-gray-900">
-                    Revisión de LinkedIn & CV
+                    Hoja de Ruta de Aprendizaje
                   </h3>
                   <p className="text-xs text-gray-600 font-sans mt-1">
-                    Hacemos que tu perfil llame la atención de los reclutadores de software usando palabras claves reales de sistemas.
+                    Diseñamos un plan de estudio y de proyectos prácticos adaptado a tu nivel (colegio, universidad o reconversión) para que dejes la teoría pesada.
                   </p>
                 </div>
               </div>
@@ -89,10 +89,10 @@ export default function WhatYouGet() {
                 </div>
                 <div>
                   <h3 className="text-lg font-black font-sans text-gray-900">
-                    Soporte e Introducción Comunitaria
+                    Realidad Laboral e Inserción
                   </h3>
                   <p className="text-xs text-gray-600 font-sans mt-1">
-                    Te conectamos con nuestra red activa de estudiantes y desarrolladores juniors en Discord para que compartas código.
+                    Conoce qué te espera en el día a día laboral, cómo prepararte para conseguir tus primeras prácticas pre-profesionales y cómo afrontar entrevistas técnicas sin paltear.
                   </p>
                 </div>
               </div>
@@ -144,61 +144,48 @@ export default function WhatYouGet() {
                 {/* Desktop Right Mock - Visual screen display */}
                 <div className="md:col-span-7 bg-slate-950 rounded-2xl border border-slate-800 p-4 flex flex-col justify-between min-h-[180px]">
                   <div>
-                    {activeHotspot === "editor" && (
-                      <div className="font-mono text-[11px] space-y-1.5 text-left">
-                        <div className="text-slate-500">// src/App.tsx - Kuni's modular way</div>
-                        <div className="text-emerald-400">import <span className="text-sky-400">React</span> from <span className="text-amber-300">"react"</span>;</div>
-                        <div className="text-purple-400">export default function <span className="text-yellow-300">App</span>() &#123;</div>
-                        <div className="text-emerald-400">&nbsp;&nbsp;return (</div>
-                        <div className="text-sky-400">&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-red-400">DynamicRoadmap</span> /&gt;</div>
-                        <div className="text-emerald-400">&nbsp;&nbsp;);</div>
-                        <div className="text-purple-400">&#125;</div>
+                    {activeHotspot === "comparar" && (
+                      <div className="font-mono text-[11px] space-y-1.5 text-left text-emerald-400">
+                        <div className="text-slate-500">// Comparación de Carreras Tech</div>
+                        <div>Software: <span className="text-slate-300">Crea productos web/móviles y código útil.</span></div>
+                        <div>Sistemas: <span className="text-slate-300">Gestiona redes, arquitectura y procesos TI.</span></div>
+                        <div>Computación: <span className="text-slate-300">Lógica profunda, algoritmos y teoría.</span></div>
+                        <div>IA: <span className="text-slate-300">Modelos matemáticos, Machine Learning y Python.</span></div>
                       </div>
                     )}
 
-                    {activeHotspot === "browser" && (
-                      <div className="font-mono text-[11px] space-y-2 text-left">
-                        <div className="bg-slate-900 border border-slate-800 rounded-lg p-2 flex items-center gap-1">
-                          <div className="w-2 h-2 bg-green-500 rounded-full" />
-                          <span className="text-[10px] text-slate-300">https://mi-portafolio.vercel.app</span>
-                        </div>
-                        <div className="p-2 border border-dashed border-slate-800 rounded-lg text-slate-400 text-center">
-                          🚀 Desplegado en vivo en 1 segundo con Vercel.
-                        </div>
+                    {activeHotspot === "diagnostico" && (
+                      <div className="font-mono text-[11px] space-y-1.5 text-left text-sky-400">
+                        <div className="text-slate-500">// Perfil detectado de sesión</div>
+                        <div>Etapa: <span className="text-yellow-300">4to/5to Sec o Primeros Ciclos</span></div>
+                        <div>Duda principal: <span className="text-yellow-300">¿Es el desarrollo realmente para mí?</span></div>
+                        <div>Acción Kuni: <span className="text-yellow-300">Simulación interactiva de código de 15 min.</span></div>
                       </div>
                     )}
 
-                    {activeHotspot === "github" && (
-                      <div className="space-y-2 text-left font-sans">
-                        <div className="flex items-center gap-2">
-                          <div className="w-5 h-5 bg-emerald-500 rounded" />
-                          <span className="font-mono font-bold text-xs">@kunidevs Contributions</span>
-                        </div>
-                        <div className="grid grid-cols-12 gap-1 bg-slate-900 p-2 rounded-lg">
-                          {Array.from({ length: 48 }).map((_, i) => (
-                            <div 
-                              key={i} 
-                              className={`h-2.5 rounded-sm ${
-                                i % 3 === 0 ? 'bg-emerald-800' : i % 5 === 0 ? 'bg-emerald-500' : i % 7 === 0 ? 'bg-emerald-400' : 'bg-slate-800'
-                              }`} 
-                            />
-                          ))}
-                        </div>
+                    {activeHotspot === "meet" && (
+                      <div className="font-mono text-[11px] space-y-1.5 text-left text-pink-400">
+                        <div className="text-slate-500">// Detalles de la mentoría 1:1</div>
+                        <div>Plataforma: <span className="text-white">Google Meet (Llamada privada)</span></div>
+                        <div>Duración: <span className="text-white">60 minutos de foco total</span></div>
+                        <div>Inversión: <span className="text-white">S/ 30.00 PEN por sesión</span></div>
+                        <div>Material: <span className="text-white">Incluido y personalizado</span></div>
                       </div>
                     )}
 
-                    {activeHotspot === "terminal" && (
-                      <div className="font-mono text-left text-xs space-y-1 text-slate-300">
-                        <div>$ npm run build</div>
-                        <div className="text-yellow-400">vite v6.2.3 building...</div>
-                        <div className="text-emerald-400">✓ 42 modules transformed.</div>
-                        <div className="text-indigo-400">✓ dist/assets/index.js (3.2kB)</div>
+                    {activeHotspot === "practicas" && (
+                      <div className="font-mono text-[11px] space-y-1.5 text-left text-indigo-400">
+                        <div className="text-slate-500">// Pipeline de Inserción Laboral</div>
+                        <div>1. Construir portafolio real en GitHub.</div>
+                        <div>2. Optimizar LinkedIn con palabras clave ATS.</div>
+                        <div>3. Simular entrevistas técnicas de nivel Junior.</div>
+                        <div>4. Aprender a negociar tus primeras prácticas.</div>
                       </div>
                     )}
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-slate-800/60 text-left text-[11px]">
-                    <span className="text-[#0054d4] font-bold">Respuesta:</span>{" "}
+                    <span className="text-[#0054d4] font-bold">Detalle:</span>{" "}
                     <span className="text-slate-400 font-sans">
                       {hotspots.find((h) => h.id === activeHotspot)?.description}
                     </span>

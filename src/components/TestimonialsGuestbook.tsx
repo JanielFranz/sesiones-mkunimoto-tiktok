@@ -56,16 +56,13 @@ export default function TestimonialsGuestbook() {
         throw new Error("Falló al subir tu testimonio.");
       }
 
-      // Reload
-      await fetchTestimonials();
-      
       setSubmitted(true);
       setName("");
       setRole("");
       setText("");
       setRating(5);
       
-      setTimeout(() => setSubmitted(false), 4000);
+      setTimeout(() => setSubmitted(false), 5000);
     } catch (error: any) {
       console.error(error);
       setErr(error?.message || "Algo falló cargando el comentario.");
@@ -87,7 +84,7 @@ export default function TestimonialsGuestbook() {
             Testimonios y Libro de Visitas
           </h2>
           <p className="max-w-xl mx-auto text-sm sm:text-base text-gray-600 font-sans">
-            Comentarios reales del alumnado e interesados que ya pasaron por las asesorías con Kuni. ¡Deja tu propia firma!
+            Comentarios reales del alumnado e interesados que ya pasaron por las asesorías con Kuni. ¡Deja tu opinión sobre las herramientas!
           </p>
         </div>
 
@@ -116,7 +113,7 @@ export default function TestimonialsGuestbook() {
               </div>
             ) : testimonials.length === 0 ? (
               <div className="py-12 border-2 border-dashed border-gray-200 rounded-3xl text-center text-sm text-gray-500">
-                Aún no hay testimonios en el Guestbook. ¡Sé el primero en firmar!
+                Aún no hay testimonios en el Guestbook.
               </div>
             ) : (
               <div className="space-y-4 max-h-[480px] overflow-y-auto pr-2">
@@ -198,7 +195,7 @@ export default function TestimonialsGuestbook() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black uppercase text-gray-500 font-sans font-mono animate-pulse">¿Qué rol tienes? *</label>
+                  <label className="text-[10px] font-black uppercase text-gray-500 font-sans">¿Qué rol tienes? *</label>
                   <input
                     type="text"
                     value={role}
@@ -274,21 +271,21 @@ export default function TestimonialsGuestbook() {
                 {submitting ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    Publicando...
+                    Enviando...
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    Publicar mi opinión
+                    Enviar mi opinión
                   </>
                 )}
               </button>
 
               {/* Success indicator bubble */}
               {submitted && (
-                <div className="bg-emerald-50 text-emerald-600 border border-emerald-300 rounded-xl p-2.5 text-xs text-center font-sans flex items-center justify-center gap-1.5 font-bold">
-                  <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  Testimonio publicado en el feed.
+                <div className="bg-emerald-50 text-emerald-800 border border-emerald-300 rounded-xl p-2.5 text-xs text-center font-sans flex items-center justify-center gap-1.5 font-semibold leading-normal">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>¡Gracias crack! Tu testimonio ha sido recibido y enviado a moderación. Kuni lo revisará pronto.</span>
                 </div>
               )}
 

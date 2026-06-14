@@ -10,7 +10,7 @@ import BentoStats from "./components/BentoStats";
 import WhoIsItFor from "./components/WhoIsItFor";
 import WhatYouGet from "./components/WhatYouGet";
 import RoadmapBuilder from "./components/RoadmapBuilder";
-import ProfileGrader from "./components/ProfileGrader";
+import CvTemplateShowcase from "./components/CvTemplateShowcase";
 import BookingCalendar from "./components/BookingCalendar";
 import TestimonialsGuestbook from "./components/TestimonialsGuestbook";
 import FaqSection from "./components/FaqSection";
@@ -59,8 +59,8 @@ export default function App() {
         {/* Interactive Career Roadmap Builder powered by Gemini */}
         <RoadmapBuilder stageOverride={selectedStageOption} onScrollTo={handleScrollTo} />
 
-        {/* Interactive LinkedIn / CV Evaluator */}
-        <ProfileGrader />
+        {/* Interactive CV Template Showcase recommended by Kuni */}
+        <CvTemplateShowcase />
 
         {/* Testimonials Guestbook forum */}
         <TestimonialsGuestbook />

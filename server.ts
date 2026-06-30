@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import dotenv from "dotenv";
 import { GoogleGenAI, Type } from "@google/genai";
-import { Testimonial, Booking, RoadmapResponse, ProfileReviewResponse } from "./src/types";
+import { Testimonial, RoadmapResponse, ProfileReviewResponse } from "./src/types";
 
 dotenv.config();
 
@@ -45,7 +45,6 @@ const testimonials: Testimonial[] = [
   }
 ];
 
-const bookings: Booking[] = [];
 const pendingTestimonials: Testimonial[] = [];
 
 // Secure connection to Gemini API
@@ -79,37 +78,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// 2. Booking Endpoints
-app.post("/api/bookings/create", (req, res) => {
-  try {
-    const { name, email, discordId, date, timeSlot, motive, customDetails } = req.body;
-    if (!name || !email || !date || !timeSlot || !motive) {
-      return res.status(400).json({ error: "Faltan campos requeridos para la reserva." });
-    }
-
-    const code = `KUNI-${Math.floor(100000 + Math.random() * 900000)}`;
-    const newBooking: Booking = {
-      id: Math.random().toString(36).substring(7),
-      name,
-      email,
-      discordId,
-      date,
-      timeSlot,
-      motive,
-      customDetails: customDetails || "",
-      status: "confirmed",
-      code
-    };
-
-    bookings.push(newBooking);
-    res.status(201).json(newBooking);
-  } catch (error) {
-    console.error("Booking error:", error);
-    res.status(500).json({ error: "Fallo interno al procesar tu reserva." });
-  }
-});
-
-// 3. Testimonials Endpoints
+// 2. Testimonials Endpoints
 app.get("/api/testimonials", (req, res) => {
   res.json(testimonials);
 });
@@ -149,7 +118,7 @@ app.post("/api/testimonials/add", (req, res) => {
   }
 });
 
-// 4. AI Endpoint - Roadmap Builder
+// 3. AI Endpoint - Roadmap Builder
 app.post("/api/gemini/roadmap", async (req, res) => {
   try {
     const { currentStage, dreamRole, experienceYears, mainDoubt } = req.body;
@@ -275,7 +244,7 @@ Genera el resultado en formato JSON estructurado respetando estrictamente este e
   }
 });
 
-// 5. AI Endpoint - Profile Grader (LinkedIn headline / CV Summary reviewer)
+// 4. AI Endpoint - Profile Grader (LinkedIn headline / CV Summary reviewer)
 app.post("/api/gemini/grade-profile", async (req, res) => {
   try {
     const { profileText, type } = req.body;
@@ -408,7 +377,7 @@ Debe dar un JSON con este esquema estructurado:
   }
 });
 
-// 6. Vite config / Static file hosting routing
+// 5. Vite config / Static file hosting routing
 const isProd = process.env.NODE_ENV === "production";
 
 async function setupFrontend() {

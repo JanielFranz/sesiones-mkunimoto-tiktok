@@ -9,19 +9,6 @@ export interface Testimonial {
   isStudent?: boolean;
 }
 
-export interface Booking {
-  id: string;
-  name: string;
-  email: string;
-  discordId?: string;
-  date: string;
-  timeSlot: string;
-  motive: 'secundaria' | 'universitario' | 'reconversion' | 'general';
-  customDetails: string;
-  status: 'confirmed' | 'pending';
-  code: string;
-}
-
 export interface RoadmapRequest {
   currentStage: string; // 'secundaria' | 'universidad_inicial' | 'universidad_final' | 'reconversion'
   dreamRole: string; // 'frontend' | 'backend' | 'datascience' | 'mobile' | 'game'

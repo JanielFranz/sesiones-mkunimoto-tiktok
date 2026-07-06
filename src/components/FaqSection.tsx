@@ -7,7 +7,7 @@ export default function FaqSection() {
   const faqs = [
     {
       question: "¿Cómo se realiza el pago?",
-      answer: "El pago se realiza por adelantado de manera 100% segura mediante Yape, Plin o transferencia bancaria (BCP / BBVA / Interbank). Recibirás las instrucciones de pago detalladas automáticamente en tu correo electrónico con las cuentas correspondientes una vez que registres tu ticket arriba."
+      answer: "Pagas directamente con Yape desde la sección de reservas: eliges tu motivo, ingresas tu celular y el código de aprobación de tu app de Yape (Menú → 'Código de aprobación'), y el pago se valida automáticamente en segundos. Apenas se confirma, se desbloquea el calendario para que elijas tu horario. Sin capturas de pantalla ni esperas."
     },
     {
       question: "¿Qué pasa si no puedo asistir a la sesión agendada?",

@@ -23,7 +23,7 @@ export default function WhatYouGet() {
     {
       id: "practicas",
       title: "🚀 Ruta de Inserción",
-      description: "Para estudiantes avanzados: estructuramos tu portafolio y LinkedIn para destacar ante reclutadores y conseguir tus primeras prácticas."
+      description: "Para quienes buscan su primera práctica (ciclos iniciales o reconversión): estructuramos tu portafolio y LinkedIn para destacar ante reclutadores y dar el salto al mundo tech."
     }
   ];
 

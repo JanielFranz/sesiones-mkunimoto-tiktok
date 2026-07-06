@@ -1,3 +1,41 @@
+// ── Checkout (shared between frontend and Express API) ──────────────────────
+
+export interface CheckoutRequest {
+  name: string;
+  email: string;
+  /** Peruvian mobile, 9 digits starting with 9 (the Yape account number). */
+  phone: string;
+  /** 6-digit "código de aprobación" generated in the Yape app (valid ~2 min). */
+  otp: string;
+  /** Audience segment key from the booking motive selector. */
+  motive: string;
+}
+
+export interface CheckoutApproved {
+  status: "approved";
+  paymentId: string;
+  /** Calendly URL the payer may book with (single-use when the Calendly API is configured). */
+  schedulingUrl: string;
+  singleUse: boolean;
+}
+
+export interface CheckoutRejected {
+  status: "rejected";
+  reason: string;
+}
+
+export type CheckoutResponse = CheckoutApproved | CheckoutRejected;
+
+export interface HealthResponse {
+  status: "ok";
+  environment: string;
+  paymentMode: "mock" | "live";
+  schedulingMode: "calendly-api" | "public-link-fallback";
+  supabase: "connected" | "error";
+}
+
+// ── Landing page content ─────────────────────────────────────────────────────
+
 export interface Testimonial {
   id: string;
   name: string;
@@ -7,13 +45,6 @@ export interface Testimonial {
   avatar: string;
   date: string;
   isStudent?: boolean;
-}
-
-export interface RoadmapRequest {
-  currentStage: string; // 'secundaria' | 'universidad_inicial' | 'universidad_final' | 'reconversion'
-  dreamRole: string; // 'frontend' | 'backend' | 'datascience' | 'mobile' | 'game'
-  experienceYears: string;
-  mainDoubt: string;
 }
 
 export interface RoadmapStep {
@@ -29,22 +60,4 @@ export interface RoadmapResponse {
   summary: string;
   steps: RoadmapStep[];
   kuniFinalAdvice: string;
-}
-
-export interface ProfileReviewRequest {
-  profileText: string;
-  type: 'linkedin' | 'cv';
-}
-
-export interface ProfileReviewResponse {
-  score: number; // 0-100
-  positives: string[];
-  negatives: string[];
-  suggestedRewrites: {
-    title: string;
-    description: string;
-    summary: string;
-    rationale: string;
-  }[];
-  kuniFeedback: string;
 }

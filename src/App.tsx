@@ -10,7 +10,6 @@ import BentoStats from "./components/BentoStats";
 import WhoIsItFor from "./components/WhoIsItFor";
 import WhatYouGet from "./components/WhatYouGet";
 import RoadmapBuilder from "./components/RoadmapBuilder";
-import CvTemplateShowcase from "./components/CvTemplateShowcase";
 import BookingCalendar from "./components/BookingCalendar";
 import TestimonialsGuestbook from "./components/TestimonialsGuestbook";
 import FaqSection from "./components/FaqSection";
@@ -56,13 +55,10 @@ export default function App() {
         {/* Interactive Workshop Showcase info list */}
         <WhatYouGet />
 
-        {/* Interactive Career Roadmap Builder powered by Gemini */}
+        {/* Interactive Career Roadmap Builder (deterministic, curated by Kuni) */}
         <RoadmapBuilder stageOverride={selectedStageOption} onScrollTo={handleScrollTo} />
 
-        {/* Interactive CV Template Showcase recommended by Kuni */}
-        <CvTemplateShowcase />
-
-        {/* Testimonials Guestbook forum */}
+        {/* Testimonials showcase */}
         <TestimonialsGuestbook />
 
         {/* Booking slot ticket scheduler */}

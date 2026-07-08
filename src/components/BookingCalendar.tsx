@@ -279,7 +279,7 @@ export default function BookingCalendar({ bookingFormRef }: BookingCalendarProps
 
               {mockMode && (
                 <div className="bg-amber-50 border-2 border-dashed border-amber-400 rounded-xl p-3 text-[11px] font-mono text-amber-800">
-                  🧪 <strong>Modo de prueba activo</strong> (sin Culqi real). Cualquier código de 6 dígitos aprueba el pago. Prueba <code className="font-bold">000000</code> (fondos insuficientes) o <code className="font-bold">111111</code> (código expirado) para simular rechazos.
+                  🧪 <strong>Modo de prueba activo</strong> (sin Mercado Pago real). Cualquier código de 6 dígitos aprueba el pago. Prueba <code className="font-bold">000000</code> (fondos insuficientes) o <code className="font-bold">111111</code> (código expirado) para simular rechazos.
                 </div>
               )}
 

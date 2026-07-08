@@ -3,12 +3,12 @@
 -- into the local Supabase DB container).
 
 -- ─────────────────────────────────────────────────────────────────────────────
--- payments: one row per Culqi (Yape) charge attempt, approved or rejected.
+-- payments: one row per Mercado Pago (Yape) charge attempt, approved or rejected.
 -- Written exclusively by the Express server using the service-role key.
 -- ─────────────────────────────────────────────────────────────────────────────
 create table if not exists public.payments (
   id                 uuid primary key default gen_random_uuid(),
-  provider           text not null default 'culqi_mock',
+  provider           text not null default 'mercadopago_mock',
   provider_charge_id text,
   amount_cents       integer not null check (amount_cents > 0),
   currency           text not null default 'PEN',

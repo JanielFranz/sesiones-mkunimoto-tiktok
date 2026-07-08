@@ -19,4 +19,4 @@ https://ai.studio/apps/fe303d0a-4501-4a24-a304-22d48a585201
 4. Run the app:
    `npm run dev`
 
-Payments run in **mock mode** by default (`CULQI_MODE=mock`) — any 6-digit Yape approval code is accepted, except `000000` (simulates insufficient funds) and `111111` (simulates an expired code). No external API keys are required for local development; the career roadmap is generated from a curated, local dataset (no AI service).
+Payments run in **mock mode** by default (`PAYMENT_MODE=mock`) — any 6-digit Yape approval code is accepted, except `000000` (simulates insufficient funds) and `111111` (simulates an expired code). No external API keys are required for local development; the career roadmap is generated from a curated, local dataset (no AI service).

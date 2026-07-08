@@ -1,4 +1,5 @@
 import "dotenv/config";
+import crypto from "node:crypto";
 import express from "express";
 import path from "path";
 import { getSupabase, checkSupabase } from "./server/supabase";
@@ -20,7 +21,7 @@ app.get("/api/health", async (req, res) => {
   const body: HealthResponse = {
     status: "ok",
     environment: process.env.NODE_ENV || "development",
-    paymentMode: getPaymentProvider().name === "culqi" ? "live" : "mock",
+    paymentMode: getPaymentProvider().name === "mercadopago" ? "live" : "mock",
     schedulingMode: getSchedulingMode(),
     supabase: await checkSupabase()
   };
@@ -29,7 +30,7 @@ app.get("/api/health", async (req, res) => {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. Checkout — THE core invariant lives here: pay first, book after.
-//    Yape charge (Culqi or mock) → record payment in Supabase →
+//    Yape charge (Mercado Pago or mock) → record payment in Supabase →
 //    on approval, mint a Calendly scheduling link and record the booking.
 // ─────────────────────────────────────────────────────────────────────────────
 app.post("/api/checkout", async (req, res) => {
@@ -40,7 +41,8 @@ app.post("/api/checkout", async (req, res) => {
     const errors: string[] = [];
     if (!name?.trim()) errors.push("Ingresa tu nombre completo.");
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) errors.push("Ingresa un correo válido.");
-    if (!phone || !/^9\d{8}$/.test(phone)) errors.push("El celular debe tener 9 dígitos y empezar con 9.");
+    // TEMP: disabled to allow testing with Mercado Pago's Yape sandbox numbers (111111111-111111118, start with 1 not 9). Re-enable before going live.
+    // if (!phone || !/^9\d{8}$/.test(phone)) errors.push("El celular debe tener 9 dígitos y empezar con 9.");
     if (!otp || !/^\d{6}$/.test(otp)) errors.push("El código de aprobación de Yape tiene 6 dígitos.");
     if (errors.length > 0) {
       return res.status(400).json({ status: "rejected", reason: errors.join(" ") } satisfies CheckoutResponse);
@@ -115,14 +117,70 @@ app.post("/api/checkout", async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 3. Culqi webhook — server-side charge status confirmations.
-//    Stub while CULQI_MODE=mock; with live keys, verify the event and update
-//    payments.status by provider_charge_id.
+// 3. Mercado Pago webhook — server-side payment status confirmations.
+//    Verifies the x-signature HMAC per MP's Webhooks spec, then reconciles:
+//    fetches the full payment by id and updates payments.status by
+//    provider_charge_id. Our synchronous /api/checkout flow already sets the
+//    initial status, so this mostly matters for later status changes
+//    (pending → approved, chargebacks, etc.).
 // ─────────────────────────────────────────────────────────────────────────────
-app.post("/api/webhooks/culqi", async (req, res) => {
-  console.log("[culqi webhook] received:", JSON.stringify(req.body).slice(0, 500));
-  // TODO(live): validate the event's authenticity, then reconcile:
-  //   update payments set status=<event status> where provider_charge_id=<event charge id>
+function isValidMercadoPagoSignature(req: express.Request): boolean {
+  const secret = process.env.MP_WEBHOOK_SECRET;
+  if (!secret) return false;
+
+  const signatureHeader = req.header("x-signature");
+  const requestId = req.header("x-request-id");
+  const dataId = (req.query["data.id"] as string | undefined) ?? req.body?.data?.id;
+  if (!signatureHeader || !requestId || !dataId) return false;
+
+  const parts = Object.fromEntries(
+    signatureHeader.split(",").map((part) => part.trim().split("=", 2) as [string, string])
+  );
+  const { ts, v1 } = parts;
+  if (!ts || !v1) return false;
+
+  const manifest = `id:${dataId};request-id:${requestId};ts:${ts};`;
+  const expected = crypto.createHmac("sha256", secret).update(manifest).digest("hex");
+  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(v1));
+}
+
+/** Maps Mercado Pago's payment status vocabulary onto our payments.status check constraint. */
+function toPaymentsStatus(mpStatus: string | undefined): "approved" | "rejected" | "pending" {
+  if (mpStatus === "approved") return "approved";
+  if (mpStatus === "pending" || mpStatus === "in_process" || mpStatus === "authorized") return "pending";
+  return "rejected"; // rejected, cancelled, refunded, charged_back, etc.
+}
+
+app.post("/api/webhooks/mercadopago", async (req, res) => {
+  const verified = isValidMercadoPagoSignature(req);
+  console.log(
+    `[mercadopago webhook] received (signature ${verified ? "valid" : "unverified"}):`,
+    JSON.stringify(req.body).slice(0, 500)
+  );
+
+  if (verified && req.body?.type === "payment" && req.body?.data?.id) {
+    try {
+      const paymentId = req.body.data.id;
+      const paymentRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+        headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` }
+      });
+      const payment = (await paymentRes.json()) as { id?: number | string; status?: string };
+
+      if (paymentRes.ok && payment.id) {
+        const { error } = await getSupabase()
+          .from("payments")
+          .update({ status: toPaymentsStatus(payment.status), raw_response: payment })
+          .eq("provider_charge_id", String(payment.id));
+        if (error) console.error("[mercadopago webhook] payments update failed:", error.message);
+        else console.log(`[mercadopago webhook] reconciled payment ${payment.id} -> ${payment.status}`);
+      } else {
+        console.error("[mercadopago webhook] failed to fetch payment", paymentId, payment);
+      }
+    } catch (error) {
+      console.error("[mercadopago webhook] reconciliation error:", error);
+    }
+  }
+
   res.status(200).json({ received: true });
 });
 

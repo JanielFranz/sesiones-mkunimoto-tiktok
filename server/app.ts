@@ -1,6 +1,13 @@
 import "dotenv/config";
 import crypto from "node:crypto";
+import dns from "node:dns";
 import express from "express";
+
+// Node's fetch (undici) doesn't fall back from a slow/broken IPv6 route the
+// way browsers do — it just hangs until the connect timeout. Calendly/Mercado
+// Pago both resolve to dual-stack addresses, so prefer IPv4 DNS results to
+// avoid spurious ConnectTimeoutError on networks with flaky IPv6.
+dns.setDefaultResultOrder("ipv4first");
 import { getSupabase, checkSupabase } from "./supabase";
 import { getPaymentProvider } from "./payments";
 import { createSchedulingLink, getSchedulingMode } from "./scheduling";

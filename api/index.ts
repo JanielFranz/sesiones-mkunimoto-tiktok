@@ -1,4 +1,4 @@
-import { app } from "../server/app";
+import { app } from "../server/app.js";
 
 // Vercel Node.js runtime: an Express app instance is a valid (req, res)
 // handler, so exporting it directly handles every request forwarded here by

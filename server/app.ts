@@ -8,11 +8,11 @@ import express from "express";
 // Pago both resolve to dual-stack addresses, so prefer IPv4 DNS results to
 // avoid spurious ConnectTimeoutError on networks with flaky IPv6.
 dns.setDefaultResultOrder("ipv4first");
-import { getSupabase, checkSupabase } from "./supabase";
-import { getPaymentProvider } from "./payments";
-import { createSchedulingLink, getSchedulingMode } from "./scheduling";
-import { syncBookings } from "./bookingSync";
-import { CheckoutRequest, CheckoutResponse, HealthResponse } from "../src/types";
+import { getSupabase, checkSupabase } from "./supabase.js";
+import { getPaymentProvider } from "./payments.js";
+import { createSchedulingLink, getSchedulingMode } from "./scheduling.js";
+import { syncBookings } from "./bookingSync.js";
+import { CheckoutRequest, CheckoutResponse, HealthResponse } from "../src/types.js";
 
 const SESSION_PRICE_CENTS = Number(process.env.SESSION_PRICE_CENTS) || 3000;
 

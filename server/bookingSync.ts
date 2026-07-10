@@ -14,7 +14,7 @@
  * Each Calendly event is consumed by at most one booking per run.
  */
 
-import { getSupabase } from "./supabase";
+import { getSupabase } from "./supabase.js";
 
 interface CalendlyEvent {
   uri: string;

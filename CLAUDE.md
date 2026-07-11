@@ -16,12 +16,20 @@ npm run dev       # tsx server.ts — runs Express + Vite middleware on one port
 npm run db:setup  # applies db/schema.sql to the LOCAL Supabase DB container (idempotent; requires supabase docker stack running)
 npm run build     # vite build (client → dist/) + esbuild bundle server.ts → dist/server.cjs
 npm run start     # node dist/server.cjs — serves the built app (set NODE_ENV=production)
-npm run lint      # tsc --noEmit — the ONLY automated check; treat a clean typecheck as the gate before committing
+npm run lint      # tsc --noEmit — typecheck (also typechecks the test files)
+npm test          # vitest run — the unit/integration suite (node env, no DB/network)
+npm run test:coverage  # vitest run --coverage (v8; server/ coverage report)
 ```
 
 **Local prerequisites:** the local Supabase stack must be running (Docker containers named `supabase_*_projects`; API on `:54321`, Postgres on `:54322`, Studio on `:54323`). Get its credentials with `npx supabase status` (run from the parent `projects` folder). Copy `.env.example` → `.env` if missing.
 
-There is **no test suite** (no Jest/Vitest configured); `npm run lint` (typecheck) is the verification step. To smoke-test the API, run the server and:
+**Tests:** there is a **Vitest suite** under `test/` (config in `vitest.config.ts`, not `vite.config.ts` — the React/Tailwind plugins are deliberately excluded). Run it with `npm test`. Verification gate before committing = `npm run lint` (typecheck, which also covers the test files — Vitest uses esbuild and does NOT typecheck, so `tsc` catches type errors the suite won't) **and** `npm test`. Both run in CI (`.github/workflows/ci.yml`) on push/PR to `develop`, on Node 20 + 22, alongside `npm run build`. Key conventions, if you add tests:
+- Tests are deterministic and **secret-free**: `vitest.config.ts` points `DOTENV_CONFIG_PATH` at the empty `test/empty.env` so `import "dotenv/config"` never loads the real `.env`, and pins `SESSION_PRICE_CENTS=3000` / `PAYMENT_MODE=mock`. Stub anything else per-test with `vi.stubEnv`; `test/setup.ts` unstubs envs/globals/mocks and calls `vi.resetModules()` after each test, and `clearMocks: true` clears call history.
+- `test/recaptcha.test.ts` is the reference for the **fetch + env stubbing** pattern; `test/app.test.ts` is the reference for **Express integration** (supertest + `vi.mock` of the server modules + a chainable Supabase query-builder fake + a `vi.hoisted` mutable middleware).
+- Modules with a memoized singleton (`getSupabase`, `getRatelimit`) must be re-tested via `vi.resetModules()` + a fresh `await import(...)` after setting env.
+- Import project modules with the `.js` extension (Vitest resolves it to the `.ts`/`.tsx` source, same as the rest of the codebase).
+
+To smoke-test the API by hand, run the server and:
 - `GET /api/health` — expect `{status:"ok", paymentMode:"mock", supabase:"connected", ...}`. If `supabase:"error"`, the docker stack is down or grants are missing (re-run `npm run db:setup`).
 - `POST /api/checkout` with `{name,email,phone:"9########",otp:"######",motive}` — mock mode approves any 6-digit OTP except `000000` (insufficient funds) and `111111` (expired code).
 

@@ -12,11 +12,18 @@ import { getSupabase, checkSupabase } from "./supabase.js";
 import { getPaymentProvider } from "./payments.js";
 import { createSchedulingLink, getSchedulingMode } from "./scheduling.js";
 import { syncBookings } from "./bookingSync.js";
+import { checkoutRateLimit } from "./rateLimit.js";
+import { verifyRecaptcha } from "./recaptcha.js";
 import { CheckoutRequest, CheckoutResponse, HealthResponse } from "../src/types.js";
 
 const SESSION_PRICE_CENTS = Number(process.env.SESSION_PRICE_CENTS) || 3000;
 
 export const app = express();
+
+// Vercel (and any other host here) sits in front of Express as a proxy —
+// without this, req.ip resolves to the proxy hop instead of the real client,
+// which would break IP-keyed rate limiting.
+app.set("trust proxy", true);
 
 app.use(express.json());
 
@@ -39,9 +46,9 @@ app.get("/api/health", async (req, res) => {
 //    Yape charge (Mercado Pago or mock) → record payment in Supabase →
 //    on approval, mint a Calendly scheduling link and record the booking.
 // ─────────────────────────────────────────────────────────────────────────────
-app.post("/api/checkout", async (req, res) => {
+app.post("/api/checkout", checkoutRateLimit, async (req, res) => {
   try {
-    const { name, email, phone, otp, motive } = (req.body ?? {}) as Partial<CheckoutRequest>;
+    const { name, email, phone, otp, motive, recaptchaToken } = (req.body ?? {}) as Partial<CheckoutRequest>;
 
     // Validation — Peruvian mobile (9 digits, starts with 9) + 6-digit Yape OTP.
     const errors: string[] = [];
@@ -52,6 +59,14 @@ app.post("/api/checkout", async (req, res) => {
     if (!otp || !/^\d{6}$/.test(otp)) errors.push("El código de aprobación de Yape tiene 6 dígitos.");
     if (errors.length > 0) {
       return res.status(400).json({ status: "rejected", reason: errors.join(" ") } satisfies CheckoutResponse);
+    }
+
+    const recaptcha = await verifyRecaptcha(recaptchaToken, req.ip);
+    if (!recaptcha.success) {
+      return res.status(403).json({
+        status: "rejected",
+        reason: "No pudimos verificar que eres una persona real. Recarga la página e inténtalo de nuevo."
+      } satisfies CheckoutResponse);
     }
 
     const provider = getPaymentProvider();

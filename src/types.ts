@@ -9,6 +9,8 @@ export interface CheckoutRequest {
   otp: string;
   /** Audience segment key from the booking motive selector. */
   motive: string;
+  /** reCAPTCHA v3 token from the client; absent if the script didn't load. */
+  recaptchaToken?: string;
 }
 
 export interface CheckoutApproved {

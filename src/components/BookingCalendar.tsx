@@ -17,6 +17,24 @@ import { CheckoutRequest, CheckoutResponse, HealthResponse } from "../types";
 const CALENDLY_WIDGET_JS = "https://assets.calendly.com/assets/external/widget.js";
 const CALENDLY_WIDGET_CSS = "https://assets.calendly.com/assets/external/widget.css";
 
+// Public by design (Google's reCAPTCHA site keys are meant to ship in client JS).
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined;
+const RECAPTCHA_SCRIPT_SRC = RECAPTCHA_SITE_KEY
+  ? `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
+  : null;
+
+/** Undefined if the key/script aren't available — the server treats a missing token as a hard reject when it's configured, so this must only be undefined when unconfigured. */
+async function getRecaptchaToken(): Promise<string | undefined> {
+  const grecaptcha = (window as any).grecaptcha;
+  if (!RECAPTCHA_SITE_KEY || !grecaptcha) return undefined;
+  try {
+    await new Promise<void>((resolve) => grecaptcha.ready(resolve));
+    return await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "checkout" });
+  } catch {
+    return undefined;
+  }
+}
+
 interface BookingCalendarProps {
   bookingFormRef?: React.RefObject<HTMLDivElement>;
 }
@@ -80,6 +98,19 @@ export default function BookingCalendar({ bookingFormRef }: BookingCalendarProps
       .catch(() => {});
   }, []);
 
+  // 0. Carga (una sola vez, apenas monta) el script de reCAPTCHA v3. Cuanto
+  //    antes se cargue, más señales de comportamiento recolecta antes del
+  //    submit, lo que mejora la precisión del score.
+  useEffect(() => {
+    if (!RECAPTCHA_SCRIPT_SRC || (window as any).grecaptcha) return;
+    if (document.querySelector(`script[src="${RECAPTCHA_SCRIPT_SRC}"]`)) return;
+
+    const script = document.createElement("script");
+    script.src = RECAPTCHA_SCRIPT_SRC;
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   // 1. Carga (una sola vez) el widget oficial de Calendly.
   useEffect(() => {
     if (!document.querySelector(`link[href="${CALENDLY_WIDGET_CSS}"]`)) {
@@ -135,7 +166,8 @@ export default function BookingCalendar({ bookingFormRef }: BookingCalendarProps
     setPaying(true);
     setPayError(null);
     try {
-      const body: CheckoutRequest = { name, email, phone, otp, motive };
+      const recaptchaToken = await getRecaptchaToken();
+      const body: CheckoutRequest = { name, email, phone, otp, motive, recaptchaToken };
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

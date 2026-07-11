@@ -204,7 +204,9 @@ const ROLE_ROADMAPS: Record<string, { roleName: string; steps: RoadmapStep[] }> 
   }
 };
 
-function buildRoadmap(stage: string, role: string, doubt: string): RoadmapResponse {
+// Exported for unit testing — the deterministic, no-AI roadmap generator is the
+// one piece of real business logic on the front end. Pure function, no DOM.
+export function buildRoadmap(stage: string, role: string, doubt: string): RoadmapResponse {
   const base = ROLE_ROADMAPS[role] ?? ROLE_ROADMAPS.frontend;
   const stageLabel = STAGE_LABEL[stage] ?? "estás empezando en tecnología";
   const finalAdvice = STAGE_FINAL_ADVICE[stage] ?? STAGE_FINAL_ADVICE.universidad_inicial;

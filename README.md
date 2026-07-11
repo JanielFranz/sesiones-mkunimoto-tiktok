@@ -14,6 +14,7 @@ The full flow is implemented and working end-to-end: pick a motive → pay via Y
 - Rate limiting on checkout — Upstash Redis, sliding window, 5 requests / 10 min per IP
 - reCAPTCHA v3 bot protection on checkout
 - Dual deployment targets: Vercel serverless (`api/index.ts`) and a persistent-process build for non-Vercel hosts (`server.ts`)
+- ~100-test Vitest suite (server modules + roadmap logic) and a GitHub Actions CI gate on the `develop` branch
 
 **Pending for full production go-live**
 - Swap `MP_PUBLIC_KEY` / `MP_ACCESS_TOKEN` / `MP_WEBHOOK_SECRET` for real (non-`TEST-`) Mercado Pago production keys. The Yape flow (token exchange → payment) has already been exercised end-to-end against Mercado Pago's sandbox API and confirmed working, so this should be a config-only change.
@@ -57,10 +58,14 @@ Payments run in **mock mode** by default (`PAYMENT_MODE=mock`) — any 6-digit Y
 | `npm run build` | Builds the frontend to `dist/` and bundles `server.ts` → `dist/server.cjs`, for non-Vercel hosts |
 | `npm run vercel-build` | Frontend-only build; Vercel compiles `api/index.ts` separately with its own Node builder |
 | `npm run start` | Runs the built app (`dist/server.cjs`) — set `NODE_ENV=production` |
-| `npm run lint` | `tsc --noEmit` — the only automated check; must be clean before committing |
+| `npm run lint` | `tsc --noEmit` — typecheck (also typechecks the test files) |
+| `npm test` | `vitest run` — the unit/integration suite (node env, no DB or network) |
+| `npm run test:coverage` | `vitest run --coverage` — coverage report for `server/` |
 | `npm run db:setup` | Applies `db/schema.sql` to the local Supabase Postgres container |
 
-No test suite is configured (no Jest/Vitest) — typecheck plus manual smoke-testing (`GET /api/health`, a `POST /api/checkout` run) is the verification loop.
+### Tests & CI
+
+A **Vitest** suite lives under `test/` (config in `vitest.config.ts`) covering the server modules and the deterministic roadmap generator — ~100 tests, no DB or network (Supabase / payment / Calendly dependencies are mocked, and `dotenv` is neutralized so the real `.env` never loads). The verification loop before committing is `npm run lint` **and** `npm test`; `tsc` catches type errors that Vitest (esbuild) does not. GitHub Actions (`.github/workflows/ci.yml`) runs lint + coverage + build on Node 20/22 for every push and PR to `develop`.
 
 ## Environment variables
 

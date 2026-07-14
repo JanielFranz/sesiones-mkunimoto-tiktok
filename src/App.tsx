@@ -14,9 +14,13 @@ import BookingCalendar from "./components/BookingCalendar";
 import TestimonialsGuestbook from "./components/TestimonialsGuestbook";
 import FaqSection from "./components/FaqSection";
 import Footer from "./components/Footer";
+import TermsAndConditions from "./components/TermsAndConditions";
 
 export default function App() {
   const [selectedStageOption, setSelectedStageOption] = useState<string | null>(null);
+  // Vista actual: el landing ("home") o la página legal ("terms").
+  // No usamos router; alternamos con estado y volvemos con el botón "Volver al inicio".
+  const [view, setView] = useState<"home" | "terms">("home");
   const bookingRef = useRef<HTMLDivElement>(null);
 
   const handleScrollTo = (sectionId: string) => {
@@ -35,6 +39,16 @@ export default function App() {
   const handleStageSelectFromAudience = (stageKey: string) => {
     setSelectedStageOption(stageKey);
   };
+
+  // Desde la página legal, volver al home y llevar directo al formulario de reserva.
+  const handleBookFromTerms = () => {
+    setView("home");
+    requestAnimationFrame(handleOpenBooking);
+  };
+
+  if (view === "terms") {
+    return <TermsAndConditions onBack={() => setView("home")} onOpenBooking={handleBookFromTerms} />;
+  }
 
   return (
     <div className="min-h-screen bg-[#fcf9f8] flex flex-col justify-between selection:bg-yellow-300 selection:text-black">
@@ -69,7 +83,7 @@ export default function App() {
       </main>
 
       {/* Styled clean developer footer */}
-      <Footer onScrollTo={handleScrollTo} />
+      <Footer onScrollTo={handleScrollTo} onOpenTerms={() => setView("terms")} />
 
     </div>
   );

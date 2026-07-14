@@ -6,20 +6,40 @@ export default function FaqSection() {
 
   const faqs = [
     {
+      question: "¿Cómo es exactamente una sesión con Kuni?",
+      answer: "Es una videollamada 1 a 1 de 1 hora por Google Meet, 100% enfocada en ti. Nada de clases genéricas grabadas: revisamos en vivo tu momento (colegio, primeros ciclos o reconversión a tech), tus dudas reales y armamos juntos un plan de acción concreto para tu siguiente paso. Tú hablas, yo te oriento como pata que ya pasó por ahí."
+    },
+    {
+      question: "¿Cuánto dura y cuánto cuesta cada sesión?",
+      answer: "Dura 60 minutos completos de foco total y cuesta S/ 30 soles, pago único. No hay suscripción, ni mensualidad, ni letra chica: pagas una sesión, tomas una sesión. Si más adelante quieres otra, la vuelves a reservar cuando tú quieras."
+    },
+    {
+      question: "¿La sesión es online o presencial?",
+      answer: "Es 100% online por Google Meet, así que la tomas desde donde estés en Perú, LATAM o España. Apenas confirmas tu horario, el link de la videollamada te llega automáticamente a tu correo. Solo necesitas internet estable, audífonos y ganas de aprender."
+    },
+    {
+      question: "¿Necesito saber programar para aprovecharla?",
+      answer: "Para nada, crack. Estas sesiones están hechas justo para quienes recién empiezan: escolares de 4to/5to de secundaria, chicos de 1er/2do ciclo y personas que se están cambiando de rubro hacia tech. Si vienes con cero código, mejor todavía: partimos desde tu punto de arranque real, sin humo."
+    },
+    {
       question: "¿Cómo se realiza el pago?",
       answer: "Pagas directamente con Yape desde la sección de reservas: eliges tu motivo, ingresas tu celular y el código de aprobación de tu app de Yape (Menú → 'Código de aprobación'), y el pago se valida automáticamente en segundos. Apenas se confirma, se desbloquea el calendario para que elijas tu horario. Sin capturas de pantalla ni esperas."
     },
     {
       question: "¿Qué pasa si no puedo asistir a la sesión agendada?",
-      answer: "¡No te preocupes! Entendemos que surgen imprevistos universitarios o escolares. Puedes reprogramar tu sesión de manera totalmente gratuita hasta con 24 horas de anticipación a través del enlace de auto-servicio que te llegará al correo electrónico."
+      answer: "Tranqui, entendemos que surgen imprevistos escolares o universitarios. Puedes reprogramar tu sesión de manera totalmente gratuita hasta con 24 horas de anticipación desde el enlace de auto-servicio que te llega al correo. Solo ten en cuenta que si no avisas y no te conectas (no-show), esa sesión se da por tomada."
     },
     {
-      question: "¿Haces mentoría grupal para proyectos grandes?",
-      answer: "Sí, por supuesto. Si estás armando un proyecto grupal de fin de ciclo o una tesis técnica con tus compañeros de clase y necesitan asesoría conjunta, escríbeme directamente por Discord. Tarifas especiales para grupos de hasta 5 integrantes."
+      question: "¿Puedo pedir reembolso si ya pagué?",
+      answer: "El pago de la sesión no es reembolsable, pero nunca pierdes tu plata: si no puedes en tu horario, reprogramas gratis hasta 24 horas antes y listo. Esta política está para cuidar el tiempo reservado exclusivamente para ti. Puedes revisar el detalle completo en nuestros Términos y Condiciones, en el pie de página."
     },
     {
-      question: "¿La Inteligencia Artificial remplazará a los Ingenieros de Software?",
-      answer: "Rpta de Kuni: ¡Para nada, crack! Al revés, la IA es tu supercopiloto. Multiplica por 10 tu rapidez de desarrollo, pero aún necesita un cerebro técnico humano capaz de estructurar las bases lógicas, depurar errores complejos de arquitectura, y tomar decisiones de negocio realistas. En las sesiones te enseño a usarla a tu favor."
+      question: "¿Qué me llevo al terminar la sesión?",
+      answer: "Te vas con un plan de ruta personalizado según tu meta, feedback honesto sobre dónde estás parado y una lista clara de próximos pasos y recursos para avanzar por tu cuenta. Nada de charla motivacional vacía: sales sabiendo exactamente qué estudiar y en qué orden."
+    },
+    {
+      question: "¿La Inteligencia Artificial reemplazará a los Ingenieros de Software?",
+      answer: "Rpta de Kuni: ¡Para nada, crack! Al revés, la IA es tu supercopiloto. Multiplica por 10 tu rapidez de desarrollo, pero aún necesita un cerebro técnico humano capaz de estructurar las bases lógicas, depurar errores complejos de arquitectura y tomar decisiones de negocio realistas. En las sesiones te enseño a usarla a tu favor, no a depender de ella."
     }
   ];
 
